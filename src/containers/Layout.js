@@ -79,7 +79,7 @@ class CustomLayout extends Component {
     console.log('dateArray',dateArray)
 
     const url = 'https://bsa-web.herokuapp.com/get_stored_categories';
-    // const url = 'http://127.0.0.1:8000/get_stored_categories';
+    // const url = 'http://127.0.0.1:8080/get_stored_categories';
     const response = await fetch(url , {
     method: 'GET',
     headers: {
@@ -128,7 +128,7 @@ class CustomLayout extends Component {
     }
 
   }
-  
+
 
   async getArticle(slug){
     if( this.state.width <= 770 ){
@@ -147,7 +147,7 @@ class CustomLayout extends Component {
       date:''
     }
      const url = 'https://bsa-web.herokuapp.com/get_articles';
-    // const url = 'http://127.0.0.1:8000/get_articles';
+    // const url = 'http://127.0.0.1:8080/get_articles';
     const response = await fetch(url , {
     method: 'POST',
     headers: {
@@ -183,9 +183,9 @@ class CustomLayout extends Component {
     })
     console.log('MY ARTICLE',this.state.articleData)
     // console.log('text_arr',text_arr)
-    
-    
-    
+
+
+
   }
 
 
@@ -200,7 +200,7 @@ class CustomLayout extends Component {
       date:this.state.selectedDate
     }
     const url = 'https://bsa-web.herokuapp.com/get_articles';
-    // const url = 'http://127.0.0.1:8000/get_articles';
+    // const url = 'http://127.0.0.1:8080/get_articles';
     const response = await fetch(url , {
     method: 'POST',
     headers: {
@@ -230,12 +230,12 @@ class CustomLayout extends Component {
     console.log('MY ARTICLE',articleResponse)
     console.log('text_arr',text_arr)
   }
- 
+
   search(event){
      var searchQuery = this.state.qState
 
      const url = `https://bsa-web.herokuapp.com/get_search/${searchQuery}`;
-    //  const url = `http://127.0.0.1:8000/get_search/${searchQuery}`;
+     // const url = `http://127.0.0.1:8080/get_search/${searchQuery}`;
         fetch(url , {
           method: 'GET',
           headers: {
@@ -248,28 +248,28 @@ class CustomLayout extends Component {
               temp_articles:Object.entries(res.articles),
             })
             Object.entries(res.articles).map((items, i) => {
-              items[1].map((deal, idx) => { this.getArticle(deal.slug) }) 
+              items[1].map((deal, idx) => { this.getArticle(deal.slug) })
             })
-      }) 
+      })
 
       // this.getArticle(this.state.temp_articles.deal.slug)
       // console.log(this.state.temp_articles,"output");
       // console.log(this.state.temp_articles[0],"next");
 
-      
-      
+
+
   }
-  
+
   changeTitle = (e) =>{
-    
+
     this.setState({qState: e.target.value});
-    
+
   // var searchQuery = e.target.value.toLowerCase();
   // var articleDataFilter = this.state.articles.filter((el) => {
-  //     var searchValue = el[0].toLowerCase() 
-  //     return searchValue.indexOf(searchQuery) !== -1 
+  //     var searchValue = el[0].toLowerCase()
+  //     return searchValue.indexOf(searchQuery) !== -1
   // });
-      
+
   // console.log(searchQuery,'ooo', articleDataFilter, 'here')
   //  if(articleDataFilter.length === 0 ){
 
@@ -291,12 +291,12 @@ class CustomLayout extends Component {
   //  }
   // this.setState({
   //   temp_articles: articleDataFilter
-  // }); 
+  // });
   }
-    
-  
 
-  
+
+
+
 
   handleChange = (value) => {
     this.setState({
@@ -308,7 +308,7 @@ class CustomLayout extends Component {
   async onFinish (values) {
     console.log(values);
     const url = 'https://bsa-web.herokuapp.com/store_email';
-    // const url = 'http://127.0.0.1:8000/store_email';
+    // const url = 'http://127.0.0.1:8080/store_email';
     const response = await fetch(url , {
     method: 'POST',
     headers: {

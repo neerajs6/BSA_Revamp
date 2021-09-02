@@ -28,7 +28,7 @@ class About extends Component {
     async componentDidMount() {
 
       const url = 'https://bsa-web.herokuapp.com/getRandomArtical';
-      // const url = 'http://127.0.0.1:8000/getRandomArtical';
+      // const url = 'http://127.0.0.1:8080/getRandomArtical';
       const response = await fetch(url , {
       method: 'GET',
       headers: {
@@ -46,12 +46,14 @@ class About extends Component {
         dateState:''
       })
       // console.log('MY ARTICLE',this.state.articleData)
-    
+
     }
 
     async onFinish (values) {
         console.log(values);
         const url = 'https://bsa-web.herokuapp.com/store_email';
+        // const url = 'http://127.0.0.1:8080/store_email';
+
         const response = await fetch(url , {
         method: 'POST',
         headers: {

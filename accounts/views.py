@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import date, timedelta, datetime
 from jsonfield import JSONField
 import arxiv
-from arxiv import Search, SortCriterion
+# from arxiv import Search, SortCriterion
 from django.contrib import messages
 from .models import *
 from .forms import CreateUserForm
@@ -26,7 +26,7 @@ from django.views.generic import TemplateView
 from django.views.decorators.cache import never_cache
 
 # Serve Single Page Application
-# index = never_cache(TemplateView.as_view(template_name='index.html'))
+index = never_cache(TemplateView.as_view(template_name='index.html'))
 
 
 def registerPage(request):
@@ -250,7 +250,7 @@ def sort_coo(coo_matrix):
 
 def home(request):
     print('---------home-----------')
-    
+
     context = {}
     return render(request, 'index.html', context)
 
@@ -273,8 +273,6 @@ def get_stored_categories(request):
         data[main_category] = list(articles)
     return JsonResponse({"articles": data})
 
-    
-
 
 from itertools import groupby
 
@@ -282,34 +280,37 @@ from itertools import groupby
 def extract_date(entity):
     return entity['date']
 
-def get_search(request,id):
-    print("hope:",id)
+
+def get_search(request, id):
+    print("hope:", id)
 
     # query = request.query_params.get('keyword')
     # print('query:',query)
 
     search = arxiv.Search(
-        query = id,
-        max_results = 10,
-        sort_by = arxiv.SortCriterion.SubmittedDate
+        query=id,
+        max_results=10,
+        sort_by=arxiv.SortCriterion.SubmittedDate
     )
-    
+
     data = {}
     for result in search.results():
         print(result.doi, 'title')
-        data[str(result.primary_category)] = list([{'category':result.title, 'slug':result.primary_category }])
-    
+        data[str(result.primary_category)] = list([{'category': result.title, 'slug': result.primary_category}])
+
         return JsonResponse({"articles": data}, safe=False)
-        
+
     return JsonResponse({"articles": data}, safe=False)
 
 
 def getRandomCat():
     category_obj = Categories.objects.order_by('?')[0]
 
-    print("cat",category_obj.category)
+    print("cat", category_obj.category)
     articles = Articles.objects.filter(category__id=category_obj.id).order_by('-date').values()
     return articles
+
+
 @csrf_exempt
 def getRandomArtical(request):
     articles = getRandomCat()
@@ -319,21 +320,18 @@ def getRandomArtical(request):
         else:
             articles = getRandomCat()
 
-    print(articles,"art.....")
+    print(articles, "art.....")
     data = {}
     for start_date, group in groupby(articles, key=extract_date):
         # print('-date-----', start_date)
         data[str(start_date)] = list(group)
 
-    print("data:",data)
+    print("data:", data)
     return JsonResponse(data)
-    
-
 
 
 @csrf_exempt
 def get_articles(request):
-
     if request.method == 'POST':
         print('POST Request body data new')
         data = request.body.decode('utf-8')
@@ -347,15 +345,14 @@ def get_articles(request):
 
         articles = Articles.objects.filter(category=category_obj).order_by('-date').values()
 
-        
         data = {}
         for start_date, group in groupby(articles, key=extract_date):
             # print('-date-----', start_date)
             data[str(start_date)] = list(group)
 
-        print("data:",data)
+        print("data:", data)
         return JsonResponse(data)
-        
+
     return JsonResponse({'data': 'empty'})
 
 
